@@ -7,6 +7,12 @@ android {
 
     ndkVersion "23.0.7599858"
 
+    /*sourceSets {
+        main {
+            jniLibs.srcDirs 'libnode/bin/'
+        }
+    }*/
+
     defaultConfig {
         applicationId "com.arjun1407.dbkong"
         minSdk 24
@@ -38,7 +44,7 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path file('src/main/cpp/CMakeLists.txt')
+            path file('CMakeLists.txt')
             version '3.18.1'
         }
     }
