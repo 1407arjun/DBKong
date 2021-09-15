@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        TextView textView = binding.sampleText;
+
         // Example of a call to a native method
         //TextView tv = binding.sampleText;
         //tv.setText(stringFromJNI());
@@ -78,12 +80,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     @Override
                     protected void onPostExecute(String result) {
-                        Log.d("HelloRes", result);
+                        textView.setText(result);
                     }
                 }.execute();
             }
         }.start();
-
     }
 
     /*

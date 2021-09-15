@@ -7,6 +7,7 @@ android {
 
     ndkVersion "23.0.7599858"
 
+    //TODO Look into conflicting source sets but uncommenting the part below
     /*sourceSets {
         main {
             jniLibs.srcDirs 'libnode/bin/'
@@ -18,7 +19,7 @@ android {
         minSdk 24
         targetSdk 31
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
