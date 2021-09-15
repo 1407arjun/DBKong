@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
     // Used to load the 'dbkong' library on application startup.
     static {
         System.loadLibrary("dbkong");
-        System.loadLibrary("native-lib");
         System.loadLibrary("node");
     }
 
