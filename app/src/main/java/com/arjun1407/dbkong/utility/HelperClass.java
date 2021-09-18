@@ -13,14 +13,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class HelperClass {
-    
-    private final Context context;
 
-    public HelperClass(Context context) {
-        this.context = context;
-    }
-
-    public boolean deleteFolderRecursively(File file) {
+    public static boolean deleteFolderRecursively(File file) {
         try {
             boolean res=true;
             for (File childFile : file.listFiles()) {
@@ -38,7 +32,7 @@ public class HelperClass {
         }
     }
 
-    public boolean copyAssetFolder(AssetManager assetManager, String fromAssetPath, String toPath) {
+    public static boolean copyAssetFolder(AssetManager assetManager, String fromAssetPath, String toPath) {
         try {
             String[] files = assetManager.list(fromAssetPath);
             boolean res = true;
@@ -62,7 +56,7 @@ public class HelperClass {
         }
     }
 
-    public boolean copyAsset(AssetManager assetManager, String fromAssetPath, String toPath) {
+    public static boolean copyAsset(AssetManager assetManager, String fromAssetPath, String toPath) {
         InputStream in = null;
         OutputStream out = null;
         try {
@@ -82,7 +76,7 @@ public class HelperClass {
         }
     }
 
-    public void copyFile(InputStream in, OutputStream out) throws IOException {
+    public static void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
         while ((read = in.read(buffer)) != -1) {
@@ -90,7 +84,7 @@ public class HelperClass {
         }
     }
 
-    public boolean wasAPKUpdated() {
+    public static boolean wasAPKUpdated(Context context) {
         SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("NODEJS_MOBILE_PREFS", Context.MODE_PRIVATE);
         long previousLastUpdateTime = preferences.getLong("NODEJS_MOBILE_APK_LastUpdateTime", 0);
         long lastUpdateTime = 1;
@@ -103,7 +97,7 @@ public class HelperClass {
         return (lastUpdateTime != previousLastUpdateTime);
     }
 
-    public void saveLastUpdateTime() {
+    public static void saveLastUpdateTime(Context context) {
         long lastUpdateTime = 1;
         try {
             PackageInfo packageInfo = context.getApplicationContext().getPackageManager().getPackageInfo(context.getApplicationContext().getPackageName(), 0);
