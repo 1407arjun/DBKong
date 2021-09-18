@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.arjun1407.dbkong.databinding.ActivityMainBinding;
+import com.arjun1407.dbkong.utility.Executors;
 import com.arjun1407.dbkong.utility.HelperClass;
 
 import java.io.BufferedReader;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ActivityMainBinding binding;
-    public static boolean _startedNodeAlready=false;
+    public static boolean nodeStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textView = binding.sampleText;
 
-        // Example of a call to a native method
-        //TextView tv = binding.sampleText;
-        //tv.setText(stringFromJNI());
-
-        if( !_startedNodeAlready ) {
-            _startedNodeAlready=true;
-            new Thread(new Runnable() {
+        if(!nodeStarted) {
+            nodeStarted = true;
+            Executors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     //The path where we expect the node project to be at runtime.
@@ -73,18 +70,11 @@ public class MainActivity extends AppCompatActivity {
                             nodeDir+"/app.js"
                     });
                 }
-            }).start();
+            });
         }
 
 
     }
 
-    /*
-     * A native method that is implemented by the 'dbkong' native library,
-     * which is packaged with this application.
-     */
-    //public native String stringFromJNI();
     public native int startNodeWithArguments(String[] arguments);
-
-
 }

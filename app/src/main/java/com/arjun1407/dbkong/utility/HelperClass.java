@@ -91,8 +91,8 @@ public class HelperClass {
     }
 
     public boolean wasAPKUpdated() {
-        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("NODEJS_MOBILE_PREFS", Context.MODE_PRIVATE);
-        long previousLastUpdateTime = prefs.getLong("NODEJS_MOBILE_APK_LastUpdateTime", 0);
+        SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("NODEJS_MOBILE_PREFS", Context.MODE_PRIVATE);
+        long previousLastUpdateTime = preferences.getLong("NODEJS_MOBILE_APK_LastUpdateTime", 0);
         long lastUpdateTime = 1;
         try {
             PackageInfo packageInfo = context.getApplicationContext().getPackageManager().getPackageInfo(context.getApplicationContext().getPackageName(), 0);
@@ -111,8 +111,8 @@ public class HelperClass {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("NODEJS_MOBILE_PREFS", Context.MODE_PRIVATE);
-        prefs.edit().putLong("NODEJS_MOBILE_APK_LastUpdateTime", lastUpdateTime).apply();
+        SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("NODEJS_MOBILE_PREFS", Context.MODE_PRIVATE);
+        preferences.edit().putLong("NODEJS_MOBILE_APK_LastUpdateTime", lastUpdateTime).apply();
     }
     
 }
