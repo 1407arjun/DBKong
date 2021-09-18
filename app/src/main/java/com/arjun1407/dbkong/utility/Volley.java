@@ -13,12 +13,10 @@ import org.json.JSONObject;
 
 public class Volley {
 
-    public void postVolley(Context context) {
+    public static void postVolley(Context context, JSONObject object) {
         RequestQueue queue = SingletonRequestQueue.getInstance(context.getApplicationContext()).getRequestQueue();
         VolleyLog.DEBUG = true;
         String BASE_URL = "http://localhost:3000";
-
-        JSONObject object = new JSONObject();
 
         JsonObjectRequest request = new JsonObjectRequest(BASE_URL, object, new Response.Listener<JSONObject>() {
             @Override
