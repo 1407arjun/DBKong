@@ -17,14 +17,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Used to load the 'dbkong' library on application startup.
-    static {
-        System.loadLibrary("dbkong");
-        System.loadLibrary("node");
-    }
-
     private ActivityMainBinding binding;
-    public static boolean nodeStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,44 +28,18 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textView = binding.sampleText;
 
-        if(!nodeStarted) {
-            nodeStarted = true;
-            Executors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    //The path where we expect the node project to be at runtime.
-                    String nodeDir=getApplicationContext().getFilesDir().getAbsolutePath()+"/nodejs";
-                    if (HelperClass.wasAPKUpdated(MainActivity.this)) {
-                        //Recursively delete any existing nodejs-project.
-                        File nodeDirReference=new File(nodeDir);
-                        if (nodeDirReference.exists()) {
-                            HelperClass.deleteFolderRecursively(new File(nodeDir));
-                        }
-                        //Copy the node project from assets into the application's data path.
-                        HelperClass.copyAssetFolder(getApplicationContext().getAssets(), "nodejs", nodeDir);
-
-                        HelperClass.saveLastUpdateTime(MainActivity.this);
-                    }
-                    startNodeWithArguments(new String[]{"node",
-                            nodeDir+"/app.js"
-                    });
-                }
-            });
-        }
-
-        MongoDBConnect.getInstance(this, "").db("").collection("").find(new JSONObject())
+        new DBKong(this);
+        MongoDBConnect.getInstance("").db("").collection("").find(new JSONObject())
                 .addOnSuccessListener(new OnSuccessListener() {
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(JSONObject response) {
 
                     }
 
                     @Override
-                    public void onFailure() {
+                    public void onFailure(Error error) {
 
                     }
                 });
     }
-
-    public native int startNodeWithArguments(String[] arguments);
 }

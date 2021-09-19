@@ -6,7 +6,7 @@ public class Collection extends MongoDBDao {
         this.collection = collection;
     }
 
-    public Collection() {
+    protected Collection() {
     }
 
     public Collection collection(String collection) {

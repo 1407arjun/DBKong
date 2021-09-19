@@ -5,7 +5,7 @@
 
 //node's libUV requires all arguments being on contiguous memory.
 extern "C" jint JNICALL
-Java_com_arjun1407_dbkong_MainActivity_startNodeWithArguments(
+Java_com_arjun1407_dbkong_DBKong_startNodeWithArguments(
         JNIEnv *env,
         jobject /* this */,
         jobjectArray arguments) {

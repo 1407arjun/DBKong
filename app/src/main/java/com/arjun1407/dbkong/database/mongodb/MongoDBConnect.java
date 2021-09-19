@@ -6,15 +6,14 @@ public class MongoDBConnect extends Database{
     private static final Object LOCK = new Object();
     private static MongoDBConnect instance;
 
-    public MongoDBConnect(Context context, String uri) {
-        this.context = context;
+    public MongoDBConnect(String uri) {
         this.uri = uri;
     }
 
-    public static MongoDBConnect getInstance(Context context, String uri) {
+    public static MongoDBConnect getInstance(String uri) {
         if (instance == null) {
             synchronized (LOCK) {
-                instance = new MongoDBConnect(context, uri);
+                instance = new MongoDBConnect(uri);
             }
         }
         return instance;

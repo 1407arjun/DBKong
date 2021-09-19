@@ -51,6 +51,5 @@ public class Volley {
         };
 
         queue.add(request);
-
     }
 }

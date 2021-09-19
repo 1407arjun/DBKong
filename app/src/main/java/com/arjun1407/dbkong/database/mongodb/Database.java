@@ -6,7 +6,7 @@ public class Database extends Collection{
         this.db = db;
     }
 
-    public Database() {
+    protected Database() {
     }
 
     public Database db(String db) {
