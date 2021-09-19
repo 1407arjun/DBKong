@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener() {
                     @Override
                     public void onSuccess(JSONObject response) {
-
+                        textView.setText(response.toString());
                     }
 
                     @Override
                     public void onFailure(Error error) {
-
+                        textView.setText(error.getMessage());
                     }
                 });
     }

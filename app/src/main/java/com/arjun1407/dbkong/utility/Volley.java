@@ -7,13 +7,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.arjun1407.dbkong.database.mongodb.MongoDBDao;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Volley {
+public class Volley extends MongoDBDao {
 
-    public static void postVolley(Context context, JSONObject object) {
+    public static void postVolley(Context context, JSONObject object, int method) {
         RequestQueue queue = SingletonRequestQueue.getInstance(context.getApplicationContext()).getRequestQueue();
         VolleyLog.DEBUG = true;
         String BASE_URL = "http://localhost:3000";
@@ -22,21 +22,21 @@ public class Volley {
             @Override
             public void onResponse(JSONObject response) {
                 if (response != null) {
-
+                    mListener.onSuccess(response);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.getMessage() != null) {
-
+                    mListener.onFailure(new Error(error));
                 }
 
             }
         }) {
             @Override
             public int getMethod() {
-                return Method.POST;
+                return method;
             }
 
             @Override
