@@ -19,7 +19,8 @@ public class MongoDBConnect extends Database{
         return instance;
     }
 
-    public void setUri(String uri) {
+    public MongoDBConnect setUri(String uri) {
         this.uri = uri;
+        return new MongoDBConnect(uri);
     }
 }

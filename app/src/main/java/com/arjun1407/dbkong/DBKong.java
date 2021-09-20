@@ -9,7 +9,7 @@ import java.io.File;
 
 public class DBKong {
 
-    protected Context context;
+    protected static Context context;
     private static boolean nodeStarted = false;
     // Used to load the 'dbkong' library on application startup.
     static {

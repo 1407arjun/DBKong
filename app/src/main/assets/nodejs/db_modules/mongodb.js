@@ -1,51 +1,52 @@
 const { MongoClient } = require('mongodb');
 
 
-async function input(uri, cmd = -1, data = {}) {
+async function input(uri, db, collection, cmd, filter) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-    client.connect(err => {
-        const collection = client.db(dbName).collection(collectionName);
+    var result;
+    client.connect(async err => {
+        const collections = client.db(db).collection(collection);
 
-        const result;
         switch(cmd) {
             //Insert
             case 0:
-                result = await collection.insertOne();
+                result = await collections.insertOne();
                 break;
             case 1:
-                result = await collection.insertMany();
+                result = await collections.insertMany();
                 break;
-            //Update    
+            //Update
             case 2:
-                result = await collection.updateOne();
+                result = await collections.updateOne();
                 break;
             case 3:
-                result = await collection.updateMany();
+                result = await collections.updateMany();
                 break;
             case 4:
-                result = await collection.replaceOne();
+                result = await collections.replaceOne();
                 break;
-            //Read    
+            //Read
             case 5:
-                result = await collection.find().project();
+                result = await collections.find(filter).toArray(); //.project()
                 break;
-            //Delete    
+            //Delete
             case 6:
-                result = await collection.deleteOne();
+                result = await collections.deleteOne();
                 break;
             case 7:
-                result = await collection.deleteMany();
+                result = await collections.deleteMany();
                 break;
-            //Default    
+            //Default
             case 8:
-                result = await collection.count();
-                break;   
+                result = await collections.count();
+                break;
             default:
-                result = "Command not found"     
+                result = "Command not found"
         }
         client.close();
       });
+    return result;
 }
 
 module.exports = input;

@@ -11,6 +11,7 @@ import com.arjun1407.dbkong.utility.Executors;
 import com.arjun1407.dbkong.utility.HelperClass;
 import com.arjun1407.dbkong.utility.OnSuccessListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -29,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = binding.sampleText;
 
         new DBKong(this);
-        MongoDBConnect.getInstance("").db("").collection("").find(new JSONObject())
+        String uri = "";
+        MongoDBConnect.getInstance(uri).db("").collection("")
+                .find(new JSONObject())
                 .addOnSuccessListener(new OnSuccessListener() {
                     @Override
                     public void onSuccess(JSONObject response) {
