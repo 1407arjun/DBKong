@@ -32,7 +32,7 @@ public class MongoDBDao extends DBKong {
             object.put("cmd", 5);
             object.put("filter", filter);
 
-            Volley.postVolley(context, object, Request.Method.POST);
+            Volley.postVolley(context, object, Request.Method.POST, 5);
         } catch (JSONException e) {
             e.printStackTrace();
         }

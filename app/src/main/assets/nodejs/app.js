@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.post("/", (req, res) => {
-    console.log(req.body);
-    data = req.body;
+    //console.log(req.body);
+    /*data = req.body;
 
     const client = new MongoClient(data.uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -18,7 +18,7 @@ app.post("/", (req, res) => {
     client.connect(async err => {
 
         if (err) {
-            result = {error : error};
+            result = {error : err};
         } else {
             const collection = client.db(data.db).collection(data.collection);
 
@@ -61,12 +61,11 @@ app.post("/", (req, res) => {
         }
         client.close();
         res.send(req.body);
-    });
+    });*/
+    res.send(req.body);
 });
 
 app.get("/", async (req, res) => {
-    /*const result = await mongoClient("mongodb+srv://admin:Arjun1407@cluster0.1oqwt.mongodb.net/FFCS?retryWrites=true&w=majority",
-    "FFCS", "CourseData", 5, {courseCode: "CSE3013"});*/
     res.send(os.networkInterfaces());
 });
 
