@@ -7,7 +7,7 @@ public class MongoDBConnect extends Database{
     private static MongoDBConnect instance;
 
     public MongoDBConnect(String uri) {
-        super.uri = uri;
+        super.b = uri;
     }
 
     public static MongoDBConnect getInstance(String uri) {
@@ -19,8 +19,4 @@ public class MongoDBConnect extends Database{
         return instance;
     }
 
-    public MongoDBConnect setUri(String uri) {
-        super.uri = uri;
-        return new MongoDBConnect(uri);
-    }
 }

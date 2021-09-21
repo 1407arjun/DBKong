@@ -6,6 +6,8 @@ public class Database extends Collection{
         super.db = db;
     }
 
+    String b = super.a;
+
     protected Database() {
     }
 

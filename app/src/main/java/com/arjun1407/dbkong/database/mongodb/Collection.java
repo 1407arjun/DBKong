@@ -6,6 +6,8 @@ public class Collection extends MongoDBDao {
         super.collection = collection;
     }
 
+    String a = super.uri;
+
     protected Collection() {
     }
 
