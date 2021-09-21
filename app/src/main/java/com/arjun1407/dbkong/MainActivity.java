@@ -3,6 +3,8 @@ package com.arjun1407.dbkong;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.arjun1407.dbkong.database.mongodb.MongoDBConnect;
@@ -28,25 +30,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         TextView textView = binding.sampleText;
+        Button button = binding.button;
 
-        try {
-            new DBKong(this);
-            String uri = "";
-            MongoDBConnect.getInstance(uri).db("").collection("")
-                    .find(new JSONObject())
-                    .addOnSuccessListener(new OnSuccessListener() {
-                        @Override
-                        public void onSuccess(JSONObject response) {
-                            textView.setText(response.toString());
-                        }
+        new DBKong(this);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri = "";
+                MongoDBConnect.getInstance(uri).db("").collection("")
+                        .find(new JSONObject())
+                        .addOnSuccessListener(new OnSuccessListener() {
+                            @Override
+                            public void onSuccess(JSONObject response) {
+                                textView.setText(response.toString());
+                            }
 
-                        @Override
-                        public void onFailure(Error error) {
-                            textView.setText(error.getMessage());
-                        }
-                    });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                            @Override
+                            public void onFailure(Error error) {
+                                textView.setText(error.getMessage());
+                            }
+                        });
+            }
+        });
     }
 }

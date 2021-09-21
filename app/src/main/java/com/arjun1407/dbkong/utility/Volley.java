@@ -23,60 +23,46 @@ public class Volley extends MongoDBDao {
 
     public static void postVolley(Context context, JSONObject object, int method, int tag) {
 
-        new Handler().postDelayed(new Runnable() {
+        RequestQueue queue = SingletonRequestQueue.getInstance(context.getApplicationContext()).getRequestQueue();
+        VolleyLog.DEBUG = true;
+        String BASE_URL = "http://localhost:3000/";
+
+        JsonObjectRequest request = new JsonObjectRequest(BASE_URL, object, new Response.Listener<JSONObject>() {
             @Override
-            public void run() {
-                RequestQueue queue = SingletonRequestQueue.getInstance(context.getApplicationContext()).getRequestQueue();
-                VolleyLog.DEBUG = true;
-                String BASE_URL = "http://localhost:3000/";
-
-                //RequestFuture<JSONObject> future = RequestFuture.newFuture();
-                JsonObjectRequest request = new JsonObjectRequest(BASE_URL, object, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            Log.d("Hellores", response.toString());
-                            mListener.onSuccess(response);
-                        } else {
-                            Log.d("Hellores", "null");
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (error.getMessage() != null) {
-                            Log.d("Helloerr", error.getMessage());
-                            mListener.onFailure(new Error(error));
-                        }
-
-                    }
-                }) {
-                    @Override
-                    public int getMethod() {
-                        return method;
-                    }
-
-                    @Override
-                    public Priority getPriority() {
-                        return Priority.NORMAL;
-                    }
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-                };
-                //request.setTag(tag);
-                queue.add(request);
-
-                /*try {
-                    JSONObject response = future.get(30, TimeUnit.SECONDS);
-                    future.onResponse(response);
-                } catch (InterruptedException | TimeoutException | ExecutionException e) {
-                    e.printStackTrace();
-                    future.onErrorResponse(new VolleyError(e));
-                }*/
+            public void onResponse(JSONObject response) {
+                if (response != null) {
+                    Log.d("Hellores", response.toString());
+                    mListener.onSuccess(response);
+                } else {
+                    Log.d("Hellores", "null");
+                }
             }
-        }, 10000);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.getMessage() != null) {
+                    Log.d("Helloerr", error.getMessage());
+                    mListener.onFailure(new Error(error));
+                }
+
+            }
+        }) {
+            @Override
+            public int getMethod() {
+                return method;
+            }
+
+            @Override
+            public Priority getPriority() {
+                return Priority.NORMAL;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
+        queue.add(request);
     }
 }
