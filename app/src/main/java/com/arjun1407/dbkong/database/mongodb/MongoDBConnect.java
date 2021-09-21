@@ -1,26 +1,69 @@
 package com.arjun1407.dbkong.database.mongodb;
 
-import android.content.Context;
+import com.android.volley.Request;
+import com.arjun1407.dbkong.DBKong;
+import com.arjun1407.dbkong.utility.OnSuccessListener;
+import com.arjun1407.dbkong.utility.Volley;
 
-public class MongoDBConnect extends Database{
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class MongoDBConnect extends DBKong {
     private static final Object LOCK = new Object();
     private static MongoDBConnect instance;
+    private String uri;
+    private String db;
+    private String collection;
+    protected static OnSuccessListener mListener;
 
-    public MongoDBConnect(String uri) {
-        super.uri = uri;
+    public MongoDBConnect(String uri, String db, String collection) {
+        super(context);
+        this.uri = uri;
+        this.db = db;
+        this.collection = collection;
     }
 
-    public static MongoDBConnect getInstance(String uri) {
+    public static MongoDBConnect getInstance(String uri, String db, String collection) {
         if (instance == null) {
             synchronized (LOCK) {
-                instance = new MongoDBConnect(uri);
+                instance = new MongoDBConnect(uri, db, collection);
             }
         }
         return instance;
     }
 
     public MongoDBConnect setUri(String uri) {
-        super.uri = uri;
-        return new MongoDBConnect(uri);
+        this.uri = uri;
+        return new MongoDBConnect(uri, db, collection);
+    }
+
+    public MongoDBConnect setDb(String db) {
+        this.db = db;
+        return new MongoDBConnect(uri, db, collection);
+    }
+
+    public MongoDBConnect setCollection(String collection) {
+        this.collection = collection;
+        return new MongoDBConnect(uri, db, collection);
+    }
+
+    public MongoDBConnect find(JSONObject filter) {
+        try {
+            JSONObject object = new JSONObject();
+            object.put("uri", uri);
+            object.put("db", db);
+            object.put("collection", collection);
+            object.put("cmd", 5);
+            object.put("filter", filter);
+
+            Volley.postVolley(context, object, Request.Method.POST);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new MongoDBConnect(uri, db, collection);
+    }
+
+    public void addOnSuccessListener(OnSuccessListener listener) {
+        mListener = listener;
     }
 }

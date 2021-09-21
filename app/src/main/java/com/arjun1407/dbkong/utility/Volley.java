@@ -1,11 +1,9 @@
 package com.arjun1407.dbkong.utility;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 
-import com.android.volley.toolbox.RequestFuture;
-import com.arjun1407.dbkong.database.mongodb.MongoDBDao;
+import com.arjun1407.dbkong.database.mongodb.MongoDBConnect;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,13 +13,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+public class Volley extends MongoDBConnect {
 
-public class Volley extends MongoDBDao {
+    private Volley(String uri, String db, String collection) {
+        super(uri, db, collection);
+    }
 
-    public static void postVolley(Context context, JSONObject object, int method, int tag) {
+    public static void postVolley(Context context, JSONObject object, int method) {
 
         RequestQueue queue = SingletonRequestQueue.getInstance(context.getApplicationContext()).getRequestQueue();
         VolleyLog.DEBUG = true;

@@ -18,11 +18,8 @@ public class DBKong {
     }
 
     public DBKong(Context context) {
-        this.context = context;
+        DBKong.context = context;
         init();
-    }
-
-    protected DBKong() {
     }
 
     private void init() {

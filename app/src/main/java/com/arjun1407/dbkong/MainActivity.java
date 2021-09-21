@@ -37,19 +37,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String uri = "";
-                MongoDBConnect.getInstance(uri).db("").collection("")
-                        .find(new JSONObject())
-                        .addOnSuccessListener(new OnSuccessListener() {
-                            @Override
-                            public void onSuccess(JSONObject response) {
-                                textView.setText(response.toString());
-                            }
+                try {
+                    MongoDBConnect.getInstance(uri, "", "")
+                            .find(new JSONObject("{property: property}"))
+                            .addOnSuccessListener(new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(JSONObject response) {
+                                    textView.setText(response.toString());
+                                }
 
-                            @Override
-                            public void onFailure(Error error) {
-                                textView.setText(error.getMessage());
-                            }
-                        });
+                                @Override
+                                public void onFailure(Error error) {
+                                    textView.setText(error.getMessage());
+                                }
+                            });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
