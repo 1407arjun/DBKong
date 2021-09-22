@@ -11,6 +11,7 @@ import com.arjun1407.dbkong.database.mongodb.MongoDBConnect;
 import com.arjun1407.dbkong.databinding.ActivityMainBinding;
 import com.arjun1407.dbkong.utility.Executors;
 import com.arjun1407.dbkong.utility.HelperClass;
+import com.arjun1407.dbkong.utility.OnInitListener;
 import com.arjun1407.dbkong.utility.OnSuccessListener;
 
 import org.json.JSONException;
@@ -30,29 +31,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         TextView textView = binding.sampleText;
-        Button button = binding.button;
 
-        new DBKong(this);
-        button.setOnClickListener(new View.OnClickListener() {
+        new DBKong(getApplicationContext(), 30000).onInit(new OnInitListener() {
             @Override
-            public void onClick(View view) {
-                String uri = "";
-                try {
-                    MongoDBConnect.getInstance(uri, "", "")
-                            .find(new JSONObject("{property: property}"))
-                            .addOnSuccessListener(new OnSuccessListener() {
-                                @Override
-                                public void onSuccess(JSONObject response) {
-                                    textView.setText(response.toString());
-                                }
+            public void onInit(boolean init, Error error) {
+                if (init && error == null) {
+                    String uri = "";
+                    try {
+                        MongoDBConnect.getInstance(uri, "", "")
+                                .find(new JSONObject("{property: property}"))
+                                .addOnSuccessListener(new OnSuccessListener() {
+                                    @Override
+                                    public void onSuccess(JSONObject response) {
+                                        textView.setText(response.toString());
+                                    }
 
-                                @Override
-                                public void onFailure(Error error) {
-                                    textView.setText(error.getMessage());
-                                }
-                            });
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                                    @Override
+                                    public void onFailure(Error error) {
+                                        textView.setText(error.getMessage());
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

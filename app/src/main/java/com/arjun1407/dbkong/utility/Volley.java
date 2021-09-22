@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Volley extends MongoDBConnect {
@@ -21,18 +22,26 @@ public class Volley extends MongoDBConnect {
 
     public static void postVolley(Context context, JSONObject object, int method) {
 
-        RequestQueue queue = SingletonRequestQueue.getInstance(context.getApplicationContext()).getRequestQueue();
+        RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
         VolleyLog.DEBUG = true;
         String BASE_URL = "http://localhost:3000/";
 
         JsonObjectRequest request = new JsonObjectRequest(BASE_URL, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if (response != null) {
-                    Log.d("Hellores", response.toString());
-                    mListener.onSuccess(response);
-                } else {
-                    Log.d("Hellores", "null");
+                try {
+                    if (response != null && !response.getBoolean("error")) {
+                        Log.d("Hellores", response.toString());
+                        mListener.onSuccess(response);
+                    } else if (response != null && response.getBoolean("error")){
+                        Log.d("Hellores", "null");
+                        mListener.onFailure(new Error(response.getString("response")));
+                    } else {
+                        mListener.onFailure(new Error("Unknown error occurred"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    mListener.onFailure(new Error(e));
                 }
             }
         }, new Response.ErrorListener() {
@@ -42,7 +51,6 @@ public class Volley extends MongoDBConnect {
                     Log.d("Helloerr", error.getMessage());
                     mListener.onFailure(new Error(error));
                 }
-
             }
         }) {
             @Override

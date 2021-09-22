@@ -17,7 +17,7 @@ public class MongoDBConnect extends DBKong {
     protected static OnSuccessListener mListener;
 
     public MongoDBConnect(String uri, String db, String collection) {
-        super(context);
+        super(context, timeout);
         this.uri = uri;
         this.db = db;
         this.collection = collection;
@@ -34,17 +34,17 @@ public class MongoDBConnect extends DBKong {
 
     public MongoDBConnect setUri(String uri) {
         this.uri = uri;
-        return new MongoDBConnect(uri, db, collection);
+        return instance;
     }
 
     public MongoDBConnect setDb(String db) {
         this.db = db;
-        return new MongoDBConnect(uri, db, collection);
+        return instance;
     }
 
     public MongoDBConnect setCollection(String collection) {
         this.collection = collection;
-        return new MongoDBConnect(uri, db, collection);
+        return instance;
     }
 
     public MongoDBConnect find(JSONObject filter) {
@@ -60,7 +60,7 @@ public class MongoDBConnect extends DBKong {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return new MongoDBConnect(uri, db, collection);
+        return instance;
     }
 
     public void addOnSuccessListener(OnSuccessListener listener) {
