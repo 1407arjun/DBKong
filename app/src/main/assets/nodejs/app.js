@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.post("/", (req, res) => {
     data = req.body;
 
-    var client, result, x;
+    var client, result;
     try {
         client = new MongoClient(data.uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -68,7 +68,7 @@ app.post("/", (req, res) => {
                             break;
                         //Aggregate    
                         case 10:
-                            result = await collection.aggregate(data.query).toArray();
+                            result = await collection.aggregate(data.pipeline, data.options).toArray();
                             result = {error : false, response : result};
                             break;  
                         //Compound
