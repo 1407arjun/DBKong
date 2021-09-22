@@ -9,64 +9,101 @@ app.use(bodyParser.json());
 app.post("/", (req, res) => {
     data = req.body;
 
-    const client = new MongoClient(data.uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    var client, result, x;
+    try {
+        client = new MongoClient(data.uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-    var result;
-    client.connect(async err => {
-        if (err) {
-            result = {error : true, response : err};
-        } else {
-            const collection = await client.db(data.db).collection(data.collection);
+        client.connect(async err => {
+            if (err) {
+                result = {error : true, response : err};
+            } else {
+                const collection = await client.db(data.db).collection(data.collection);
 
-            switch(data.cmd) {
-                //Insert
-                case 0:
-                    result = await collection.insertOne(data.filter);
-                    result = {error : false, response : result};
-                    break;
-                case 1:
-                    result = await collection.insertMany(data.filter);
-                    result = {error : false, response : result};
-                    break;
-                //Update
-                case 2:
-                    result = await collection.updateOne(data.filter);
-                    result = {error : false, response : result};
-                    break;
-                case 3:
-                    result = await collection.updateMany(data.filter);
-                    result = {error : false, response : result};
-                    break;
-                case 4:
-                    result = await collection.replaceOne(data.filter);
-                    result = {error : false, response : result};
-                    break;
-                //Read
-                case 5:
-                    result = await collection.find(data.filter).toArray(); //.project() limit
-                    result = {error : false, count : result.length, response : result};
-                    break;
-                //Delete
-                case 6:
-                    result = await collection.deleteOne(data.filter);
-                    result = {error : false, response : result};
-                    break;
-                case 7:
-                    result = await collection.deleteMany(data.filter);
-                    result = {error : false, response : result};
-                    break;
-                //Default
-                case 8:
-                    result = await collection.countDocuments(data.filter);
-                    result = {error : true, response : result};
-                    break;
-                default:
-                    result = {response : "Command not found"}
+                try {
+                    switch(data.cmd) {
+                        //Insert
+                        case 0:
+                            result = await collection.insertOne(data.query);
+                            result = {error : false, response : result};
+                            break;
+                        case 1:
+                            result = await collection.insertMany(data.query);
+                            result = {error : false, response : result};
+                            break;
+                        //Update
+                        case 2:
+                            result = await collection.updateOne(data.filter, data.updateDocument, data.options);
+                            result = {error : false, response : result};
+                            break;
+                        case 3:
+                            result = await collection.updateMany(data.filter, data.updateDocument, data.options);
+                            result = {error : false, response : result};
+                            break;
+                        case 4:
+                            result = await collection.replaceOne(data.filter, data.replacementDocument, data.options);
+                            result = {error : false, response : result};
+                            break;
+                        //Read sort, skip, limit, projection
+                        case 5:
+                            result = await collection.findOne(data.query, data.options);
+                            result = {error : false, count : result.length, response : result};
+                            break;
+                        case 6:
+                            result = await collection.find(data.query, data.options).toArray();
+                            result = {error : false, count : result.length, response : result};
+                            break;     
+                        //Delete
+                        case 7:
+                            result = await collection.deleteOne(data.query);
+                            result = {error : false, response : result};
+                            break;
+                        case 8:
+                            result = await collection.deleteMany(data.query);
+                            result = {error : false, response : result};
+                            break;
+                        //Default
+                        case 9:
+                            result = await collection.countDocuments(data.filter, data.options);
+                            result = {error : false, response : result};
+                            break;
+                        //Aggregate    
+                        case 10:
+                            result = await collection.aggregate(data.query).toArray();
+                            result = {error : false, response : result};
+                            break;  
+                        //Compound
+                        case 11:
+                            result = await collection.findOneAndDelete(data.query, data.options);
+                            result = {error : false, response : result};
+                            break;
+                        case 12:
+                            result = await collection.findOneAndUpdate(data.filter, data.updateDocument, data.options);
+                            result = {error : false, response : result};
+                            break; 
+                        case 13:
+                            result = await collection.findOneAndReplace(data.filter, data.replacementDocument, data.options);
+                            result = {error : false, response : result};
+                            break;   
+                        //Bulk Write JSONArray (operations)    
+                        case 14:
+                            result = await collection.bulkWrite(data.operations, data.options);
+                            result = {error : false, response : result};
+                            break;                
+                        default:
+                            result = {error : true, response : "Command not found"}
+                    }
+                } catch (e) {
+                    result = await {error : true, response : e}; 
+                }
             }
-        }
-        client.close();
+        });
+    } catch (e) {
+        result = {error : true, response : {name: e.name, message: e.message}};    
+    } finally {
+        if (client !== undefined)
+            client.close();
         res.json(result);
-    });
+    }
 });
 
 app.get("/", (req, res) => {
