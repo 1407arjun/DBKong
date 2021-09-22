@@ -49,5 +49,4 @@ Java_com_arjun1407_dbkong_DBKong_startNodeWithArguments(
     free(args_buffer);
 
     return jint(node_result);
-
 }
