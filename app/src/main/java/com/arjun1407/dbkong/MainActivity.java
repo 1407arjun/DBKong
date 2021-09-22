@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 if (init && error == null) {
                     String uri = "";
                     try {
-                        MongoDBConnect.getInstance(uri, "", "")
+                        MongoDBConnect.getInstance(uri).db("").collection("")
                                 .find(new JSONObject("{property: property}"))
                                 .addOnSuccessListener(new OnSuccessListener() {
                                     @Override

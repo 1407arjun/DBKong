@@ -17,17 +17,15 @@ public class MongoDBConnect extends DBKong {
     private String collection;
     protected static OnSuccessListener mListener;
 
-    public MongoDBConnect(String uri, String db, String collection) {
+    public MongoDBConnect(String uri) {
         super(context, timeout);
         this.uri = uri;
-        this.db = db;
-        this.collection = collection;
     }
 
-    public static MongoDBConnect getInstance(String uri, String db, String collection) {
+    public static MongoDBConnect getInstance(String uri) {
         if (instance == null) {
             synchronized (LOCK) {
-                instance = new MongoDBConnect(uri, db, collection);
+                instance = new MongoDBConnect(uri);
             }
         }
         return instance;
@@ -38,14 +36,43 @@ public class MongoDBConnect extends DBKong {
         return instance;
     }
 
-    public MongoDBConnect setDb(String db) {
+    public MongoDBConnect db(String db) {
         this.db = db;
         return instance;
     }
 
-    public MongoDBConnect setCollection(String collection) {
+    public MongoDBConnect collection(String collection) {
         this.collection = collection;
         return instance;
+    }
+
+    public void dropDb() {
+        try {
+            JSONObject object = new JSONObject();
+            object.put("uri", uri);
+            object.put("db", db);
+            object.put("cmd", -2);
+
+            Volley.postVolley(context, object, Request.Method.POST);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            mListener.onFailure(new Error(e));
+        }
+    }
+
+    public void dropCollection() {
+        try {
+            JSONObject object = new JSONObject();
+            object.put("uri", uri);
+            object.put("db", db);
+            object.put("collection", collection);
+            object.put("cmd", -1);
+
+            Volley.postVolley(context, object, Request.Method.POST);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            mListener.onFailure(new Error(e));
+        }
     }
 
     public MongoDBConnect insertOne(JSONObject query) {
@@ -65,7 +92,7 @@ public class MongoDBConnect extends DBKong {
         return instance;
     }
 
-    public MongoDBConnect insertMany(JSONObject query) {
+    public MongoDBConnect insertMany(JSONArray query) {
         try {
             JSONObject object = new JSONObject();
             object.put("uri", uri);

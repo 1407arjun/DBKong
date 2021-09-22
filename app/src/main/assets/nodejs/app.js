@@ -21,6 +21,15 @@ app.post("/", (req, res) => {
 
                 try {
                     switch(data.cmd) {
+                        //Drop
+                        case -2:
+                            result = await client.db(data.db).drop();
+                            result = {error : false, response : result};
+                            break;
+                        case -1:
+                            result = await collection.drop();
+                            result = {error : false, response : result};
+                            break;
                         //Insert
                         case 0:
                             result = await collection.insertOne(data.query);
@@ -46,7 +55,7 @@ app.post("/", (req, res) => {
                         //Read sort, skip, limit, projection
                         case 5:
                             result = await collection.findOne(data.query, data.options);
-                            result = {error : false, count : result.length, response : result};
+                            result = {error : false, response : result};
                             break;
                         case 6:
                             result = await collection.find(data.query, data.options).toArray();
@@ -69,7 +78,7 @@ app.post("/", (req, res) => {
                         //Aggregate    
                         case 10:
                             result = await collection.aggregate(data.pipeline, data.options).toArray();
-                            result = {error : false, response : result};
+                            result = {error : false, count : result.length, response : result};
                             break;  
                         //Compound
                         case 11:
@@ -93,7 +102,7 @@ app.post("/", (req, res) => {
                             result = {error : true, response : "Command not found"}
                     }
                 } catch (e) {
-                    result = await {error : true, response : e}; 
+                    result = {error : true, response : e}; 
                 }
             }
         });
