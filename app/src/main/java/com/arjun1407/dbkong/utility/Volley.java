@@ -16,8 +16,8 @@ import org.json.JSONObject;
 
 public class Volley extends MongoDBConnect {
 
-    private Volley(String uri) {
-        super(uri);
+    private Volley(String uri, String db, String collection) {
+        super(uri, db, collection);
     }
 
     public static void postVolley(Context context, JSONObject object, int method) {

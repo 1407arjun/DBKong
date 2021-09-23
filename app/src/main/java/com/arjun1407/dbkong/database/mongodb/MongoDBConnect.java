@@ -17,15 +17,17 @@ public class MongoDBConnect extends DBKong {
     private String collection;
     protected static OnSuccessListener mListener;
 
-    public MongoDBConnect(String uri) {
+    public MongoDBConnect(String uri, String db, String collection) {
         super(context, timeout);
         this.uri = uri;
+        this.db = db;
+        this.collection = collection;
     }
 
-    public static MongoDBConnect getInstance(String uri) {
+    public static MongoDBConnect getInstance(String uri, String db, String collection) {
         if (instance == null) {
             synchronized (LOCK) {
-                instance = new MongoDBConnect(uri);
+                instance = new MongoDBConnect(uri, db, collection);
             }
         }
         return instance;

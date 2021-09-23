@@ -40,6 +40,63 @@ public class DBKong {
         init();
     }
 
+    public DBKong(Context context, int timeout, OnInitListener listener) {
+        DBKong.context = context;
+        DBKong.timeout = timeout;
+        this.listener = listener;
+
+        RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
+        VolleyLog.DEBUG = true;
+        String BASE_URL = "http://localhost:3000/";
+
+        Log.d("Hellostart", Boolean.toString(nodeStarted));
+        JsonObjectRequest request = new JsonObjectRequest(BASE_URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response != null && response.getBoolean("init")) {
+                        Log.d("Hellores", response.toString());
+                        nodeStarted = true;
+                        listener.onInit(true, null);
+                    } else {
+                        Log.d("Hellores", "null");
+                        init();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    init();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.getMessage() != null) {
+                    Log.d("Helloerr", error.getMessage());
+                    init();
+                } else {
+                    init();
+                }
+            }
+        }) {
+            @Override
+            public int getMethod() {
+                return Method.GET;
+            }
+
+            @Override
+            public Priority getPriority() {
+                return Priority.NORMAL;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
+        queue.add(request);
+    }
+
     private void init() {
         if(!nodeStarted) {
             Executors.getInstance().diskIO().execute(new Runnable() {
@@ -134,8 +191,4 @@ public class DBKong {
         }
     }
     private native int startNodeWithArguments(String[] arguments);
-
-    public void onInit(OnInitListener listener) {
-        this.listener = listener;
-    }
 }
