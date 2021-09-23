@@ -17,13 +17,16 @@ app.post("/", (req, res) => {
             if (err) {
                 result = {error : true, response : err};
             } else {
-                const collection = await client.db(data.db).collection(data.collection);
-
                 try {
+                    if (data.cmd === -2)
+                        var db = await client.db(data.db);
+                    else    
+                        var collection = await client.db(data.db).collection(data.collection);
+
                     switch(data.cmd) {
                         //Drop
                         case -2:
-                            result = await client.db(data.db).drop();
+                            result = await db.dropDatabase();
                             result = {error : false, response : result};
                             break;
                         case -1:
@@ -102,7 +105,7 @@ app.post("/", (req, res) => {
                             result = {error : true, response : "Command not found"}
                     }
                 } catch (e) {
-                    result = {error : true, response : e}; 
+                    result = {error : true, response : {name: e.name, message: e.message}}; 
                 }
             }
         });
@@ -111,6 +114,7 @@ app.post("/", (req, res) => {
     } finally {
         if (client !== undefined)
             client.close();
+           
         res.json(result);
     }
 });

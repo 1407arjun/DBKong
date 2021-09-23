@@ -46,7 +46,7 @@ public class MongoDBConnect extends DBKong {
         return instance;
     }
 
-    public void dropDb() {
+    public void dropDatabase() {
         try {
             JSONObject object = new JSONObject();
             object.put("uri", uri);
