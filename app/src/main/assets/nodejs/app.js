@@ -108,14 +108,17 @@ app.post("/", (req, res) => {
                     result = {error : true, response : {name: e.name, message: e.message}}; 
                 }
             }
+
+            client.close();
+            res.json(result);
         });
+
     } catch (e) {
-        result = {error : true, response : {name: e.name, message: e.message}};    
-    } finally {
+        result = {error : true, response : {name: e.name, message: e.message}};
         if (client !== undefined)
             client.close();
            
-        res.json(result);
+        res.json(result);    
     }
 });
 
