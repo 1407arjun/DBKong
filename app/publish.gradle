@@ -2,9 +2,6 @@ apply plugin: 'maven-publish'
 
 publish.dependsOn assemble
 
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
-
 def getVersionName = { ->
     return "1.1.0" // Replace with version Name
 }
