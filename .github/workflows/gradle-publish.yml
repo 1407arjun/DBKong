@@ -8,8 +8,9 @@ on:
     types: [created]
 
 jobs:
-  build:
-
+  publish:
+  
+    name: Publish to GitHub Packages
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,13 +26,16 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-    - name: Build with Gradle
-      run: gradle build
-
+    - name: Grant Permission for Gradlew to Execute
+      run: chmod +x gradlew
+      
+    - name: Build AAR
+      run: bash ./gradlew :app:assemble
+        
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
     - name: Publish to GitHub Packages
-      run: gradle publish
+      run: bash ./gradlew :app:publish
       env:
-        USERNAME: ${{ secrets.GPR_USER }}
-        TOKEN: ${{ secrets.GPR_API_KEY }}
+          GPR_USER: ${{ github.actor }}
+          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
