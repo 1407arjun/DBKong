@@ -1,5 +1,6 @@
 ## DBKong - Database connections simplified
 [![Android CI](https://github.com/1407arjun/DBKong/actions/workflows/android.yml/badge.svg)](https://github.com/1407arjun/DBKong/actions/workflows/android.yml)
+[![Gradle Package](https://github.com/1407arjun/DBKong/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/1407arjun/DBKong/actions/workflows/gradle-publish.yml)
 
 DBKong is an Android library that allows you to connect, interact and test any type of cloud database on Android apps without the need to setup a dedicated backend. 
 The library simplifies the process of connecting to a database and performing operations on it to just a few lines of code. 
@@ -23,7 +24,7 @@ dependencies {
 
     ...
 
-    implementation 'com.1407arjun.libs:dbkong:1.0.0'
+    implementation 'com.1407arjun.libs:dbkong:1.1.0'
 
     //Volley dependencies (required by the library as of the current version)
     implementation 'com.google.code.gson:gson:2.8.2'
@@ -32,11 +33,12 @@ dependencies {
     ...
 }
 ```
-2. Create a `github.properties` file in the root of your project and add in the code as follows:
+2. Create a `github.properties` file in the root of your project and add in the code as follows (skip this step if you want to use system environment variables as in step 2):
 ``` 
 gpr.usr = < your github username >
 gpr.key = < your personal access token >
 ```
+**The personal access token should have read packages scope.**
 
 3. In the `app/build.gradle` (module level gradle file) include the following code to access the credentials from the `github.properties` file:
 ```
