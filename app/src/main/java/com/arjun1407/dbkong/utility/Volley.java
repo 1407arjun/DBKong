@@ -1,7 +1,6 @@
 package com.arjun1407.dbkong.utility;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.arjun1407.dbkong.database.mongodb.MongoDBConnect;
 
@@ -31,10 +30,8 @@ public class Volley extends MongoDBConnect {
             public void onResponse(JSONObject response) {
                 try {
                     if (response != null && !response.getBoolean("error")) {
-                        Log.d("Hellores", response.toString());
                         mListener.onSuccess(response);
                     } else if (response != null && response.getBoolean("error")){
-                        Log.d("Hellores", "null");
                         mListener.onFailure(new Error(response.getString("response")));
                     } else {
                         mListener.onFailure(new Error("Unknown error occurred"));
@@ -48,7 +45,6 @@ public class Volley extends MongoDBConnect {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.getMessage() != null) {
-                    Log.d("Helloerr", error.getMessage());
                     mListener.onFailure(new Error(error));
                 }
             }

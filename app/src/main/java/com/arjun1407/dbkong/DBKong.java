@@ -2,7 +2,6 @@ package com.arjun1407.dbkong;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -12,7 +11,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.arjun1407.dbkong.utility.Executors;
 import com.arjun1407.dbkong.utility.HelperClass;
 import com.arjun1407.dbkong.utility.OnInitListener;
-import com.arjun1407.dbkong.utility.OnSuccessListener;
 import com.arjun1407.dbkong.utility.SingletonRequestQueue;
 
 import org.json.JSONException;
@@ -49,17 +47,14 @@ public class DBKong {
         VolleyLog.DEBUG = true;
         String BASE_URL = "http://localhost:3000/";
 
-        Log.d("Hellostart", Boolean.toString(nodeStarted));
         JsonObjectRequest request = new JsonObjectRequest(BASE_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     if (response != null && response.getBoolean("init")) {
-                        Log.d("Hellores", response.toString());
                         nodeStarted = true;
                         listener.onInit(true, null);
                     } else {
-                        Log.d("Hellores", "null");
                         init();
                     }
                 } catch (JSONException e) {
@@ -70,12 +65,7 @@ public class DBKong {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.getMessage() != null) {
-                    Log.d("Helloerr", error.getMessage());
-                    init();
-                } else {
-                    init();
-                }
+                init();
             }
         }) {
             @Override
@@ -127,18 +117,15 @@ public class DBKong {
             new CountDownTimer(timeout, 500) {
                 @Override
                 public void onTick(long l) {
-                    Log.d("Hellostart", Boolean.toString(nodeStarted));
                     JsonObjectRequest request = new JsonObjectRequest(BASE_URL, null, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
                                 if (response != null && response.getBoolean("init")) {
-                                    Log.d("Hellores", response.toString());
                                     nodeStarted = true;
                                     listener.onInit(true, null);
                                     cancel();
                                 } else {
-                                    Log.d("Hellores", "null");
                                     mError = new Error("Unknown error occurred");
                                 }
                             } catch (JSONException e) {
@@ -150,7 +137,6 @@ public class DBKong {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (error.getMessage() != null) {
-                                Log.d("Helloerr", error.getMessage());
                                 mError = new Error(error);
                             } else {
                                 mError = new Error("Unknown error occurred");
