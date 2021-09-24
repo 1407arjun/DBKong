@@ -1,11 +1,11 @@
-## DBKong - Database connections simplified
+## DB Kong - Database connections simplified
 [![Android CI](https://github.com/1407arjun/DBKong/actions/workflows/android.yml/badge.svg)](https://github.com/1407arjun/DBKong/actions/workflows/android.yml)
 [![Gradle Package](https://github.com/1407arjun/DBKong/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/1407arjun/DBKong/actions/workflows/gradle-publish.yml)
 
-DBKong is an Android library that allows you to connect, interact and test any type of cloud database on Android apps without the need to setup a dedicated backend. 
+DB Kong is an Android library that allows you to connect, interact and test any type of cloud database on Android apps without the need to setup a dedicated backend. 
 The library simplifies the process of connecting to a database and performing operations on it to just a few lines of code. 
 
-As of the current release DBKong supports the following databases (future releases are aimed at including many more):
+As of the current release DB Kong supports the following databases (future releases are aimed at including many more):
 - `MongoDB`
 
 I really can't wait for y'all to try it out, so let's dive into the setup and features!
