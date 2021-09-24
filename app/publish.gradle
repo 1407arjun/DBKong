@@ -1,5 +1,7 @@
 apply plugin: 'maven-publish'
 
+publish.dependsOn assemble
+
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
 
@@ -17,8 +19,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/1407arjun/DBKong")
             credentials {
-                username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
-                password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+                username = System.getenv("GPR_USER")
+                password = System.getenv("GPR_API_KEY")
             }
         }
     }
@@ -27,7 +29,7 @@ publishing {
             groupId 'com.1407arjun.libs' // Replace with group ID
             artifactId getArtificatId()
             version getVersionName()
-            artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
+            artifact("$buildDir/outputs/aar/app-release.aar")
 
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
