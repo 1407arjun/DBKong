@@ -38,4 +38,4 @@ jobs:
       run: bash ./gradlew :app:publish
       env:
           GPR_USER: ${{ github.actor }}
-          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
+          GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
